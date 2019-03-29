@@ -15,16 +15,16 @@ def get_time(year=now.year,
              detail=True):
     """
     获取 00:00:00
-    :param year: 年 (默认今年)
-    :param month: 月 (默认当月)
-    :param day: 天 (默认今天)
-    :param hour: 时 (默认今天)
-    :param minute: 分 (默认今天)
-    :param second: 秒 (默认今天)
-    :param week: 星期x (默认-1,如果不等于-1,则day参数无效)
-    :param last_day_of_month: 每个月的最后一天 (默认False)
-    :param type: 输出类型 (默认今天)
-    :param detail: 是否输出时分秒? (默认输出时分秒)
+    :param year: 年 (默认今年,可输入任意年份)
+    :param month: 月 (默认当月,可输入任意月份)
+    :param day: 天 (默认今天,可输入任意天数)
+    :param hour: 时 (默认当前,可输入任意小时)
+    :param minute: 分 (默认当前,可输入任意分)
+    :param second: 秒 (默认当前,可输入任意秒)
+    :param week: 星期x (默认-1,如果不等于-1,则day参数无效,可输入任意1-7)
+    :param last_day_of_month: 每个月的最后一天 (默认False,如果为True,则返回month最后一天)
+    :param type: 输出类型 (默认time,可输入"str"返回字符串类型数据)
+    :param detail: 是否输出时分秒? (默认输出时分秒,如果为False,则只返回 年-月-日 )
     :return: time (type datetime / str)
     """
 
@@ -54,4 +54,7 @@ def get_time(year=now.year,
         ret = date if type == "time" else str(date)
 
     return ret
+
+
+
 
