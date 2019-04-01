@@ -1,5 +1,6 @@
-import datetime
+import datetime, time
 import calendar
+
 now = datetime.datetime.now()
 
 
@@ -14,36 +15,32 @@ def get_time(year=now.year,
              type="time",
              detail=True):
     """
-    获取 00:00:00
-    :param year: 年 (默认今年,可输入任意年份)
-    :param month: 月 (默认当月,可输入任意月份)
-    :param day: 天 (默认今天,可输入任意天数)
-    :param hour: 时 (默认当前,可输入任意小时)
-    :param minute: 分 (默认当前,可输入任意分)
-    :param second: 秒 (默认当前,可输入任意秒)
-    :param week: 星期x (默认-1,如果不等于-1,则day参数无效,可输入任意1-7)
-    :param last_day_of_month: 每个月的最后一天 (默认False,如果为True,则返回month最后一天)
-    :param type: 输出类型 (默认time,可输入"str"返回字符串类型数据)
-    :param detail: 是否输出时分秒? (默认输出时分秒,如果为False,则只返回 年-月-日 )
-    :return: time (type datetime / str)
+
+    :param year: 年 (默认今年)
+    :param month: 月 (默认当月)
+    :param day: 天 (默认今天)
+    :param hour: 时 (默认当前时间)
+    :param minute: 分 (默认当前时间)
+    :param second: 秒 (默认当前时间)
+    :param week: 星期x (默认-1,如果不等于-1,则day参数无效)
+    :param last_day_of_month: 每个月的最后一天 (默认False)
+    :param type: 输出类型 (time / str)
+    :param detail: 是否输出时分秒? (默认输出时分秒)
+    :return: 时间 
     """
 
     if week != -1:
-        weekday = now - \
-                  datetime.timedelta(hours=hour,
-                            minutes=minute,
-                            seconds=second,
-                            microseconds=now.microsecond)
+        weekday = datetime.datetime(year, month, day, hour, minute, second)
 
         one_day = datetime.timedelta(days=1)
         while weekday.weekday() != 0:
             weekday -= one_day
 
-        ret = weekday + datetime.timedelta(days=week-1)
+        ret = weekday + datetime.timedelta(days=week - 1)
 
     else:
 
-        if last_day_of_month: # 每个月的最后一天
+        if last_day_of_month:  # 每个月的最后一天
             day = calendar.monthrange(year, month)[1]
 
         if not detail:
@@ -56,5 +53,38 @@ def get_time(year=now.year,
     return ret
 
 
+def get_timestamp(detail=True):
+    """
+    获取当前时间戳 
+    :param detail: True输出完整的时间戳/ False输出前10位(小数点之前)
+    :return: 时间戳 
+    """
+    if detail:
+        ret = time.time()
+    else:
+        ret = int(time.time())
+    return ret
 
 
+def timestamp_to_str(timestamp, strformat):
+    """
+    时间戳转字符串
+    :param timestamp: 时间戳 
+    :param strformat: 转换格式 (%Y-%m-%d %H:%M:%S)
+    :return: 时间字符串 
+    """
+    ret = time.strftime(strformat, time.localtime(timestamp)) 
+
+    return ret
+
+
+def str_to_timestamp(timestr, strformat):
+    """
+    字符串转时间戳 
+    :param timestr: 时间字符串 
+    :param strformat: 转换格式 (%Y-%m-%d %H:%M:%S) 
+    :return: 时间戳 (前10位)
+    """
+    ret = int(time.mktime(time.strptime(timestr, strformat)))
+
+    return ret
